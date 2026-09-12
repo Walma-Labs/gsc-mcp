@@ -1,0 +1,39 @@
+[project]
+name = "gsc-mcp"
+version = "0.1.0"
+description = "Google Search Console MCP server with service-account auth: search analytics, period comparison, sitemaps and URL inspection for Claude, Cursor and any MCP client."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+authors = [{ name = "Walma AI", email = "info@walma.ai" }]
+keywords = ["mcp", "model-context-protocol", "google-search-console", "seo", "claude", "search-analytics"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+]
+dependencies = [
+    "mcp>=1.2,<2",
+    "google-api-python-client>=2.100",
+    "google-auth>=2.30",
+]
+
+[project.urls]
+Homepage = "https://walma-labs.github.io/gsc-mcp/"
+Repository = "https://github.com/Walma-Labs/gsc-mcp"
+Guide = "https://walma.ai/en/guides/mcp/google-search-console-mcp"
+Issues = "https://github.com/Walma-Labs/gsc-mcp/issues"
+
+[project.scripts]
+gsc-mcp = "gsc_mcp.server:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["gsc_mcp*"]

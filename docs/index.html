@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gsc-mcp — Google Search Console MCP server</title>
+<meta name="description" content="Open-source, read-only MCP server for Google Search Console with service-account auth. Search analytics, period comparison, sitemaps and URL inspection for Claude, Cursor and Claude Code.">
+<link rel="canonical" href="https://walma-labs.github.io/gsc-mcp/">
+<style>
+:root{--bg:#0b0b0b;--soft:#171717;--surface:#202020;--line:#303030;--ink:#f4f1ea;--body:#b6b2a8;--muted:#8b877d;--accent:#2fb37e;--primary:#2e543d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:56px 24px 80px}
+h1{font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 16px;font-weight:500}
+h2{font-size:1.4rem;margin:44px 0 12px;font-weight:500}
+p{color:var(--body);margin:0 0 14px}.lede{font-size:1.15rem}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(47,179,126,.4)}a:hover{border-color:var(--accent)}
+.eyebrow{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 8px}
+.btn{display:inline-block;padding:11px 18px;border-radius:8px;border:1px solid var(--line);color:var(--ink);background:var(--surface);font-size:14px;font-weight:500}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+pre{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto;font:13px/1.5 "JetBrains Mono",ui-monospace,Menlo,monospace;color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:.95rem;margin:8px 0 20px}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}th{background:var(--soft)}td{color:var(--body)}
+code{font:13px "JetBrains Mono",ui-monospace,Menlo,monospace;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <span class="eyebrow">Open source · MIT</span>
+  <h1>gsc-mcp<br>Google Search Console for your AI agent</h1>
+  <p class="lede">A small, read-only <a href="https://modelcontextprotocol.io">Model Context Protocol</a> server that gives Claude, Cursor, Claude Code and any MCP client access to Search Console: search analytics, period comparisons, sitemaps and URL inspection. Service-account auth, so no personal Google login on the machine running the agent.</p>
+  <div class="btns">
+    <a class="btn primary" href="https://github.com/Walma-Labs/gsc-mcp">View on GitHub</a>
+    <a class="btn" href="https://walma.ai/en/guides/mcp/google-search-console-mcp">Read the setup guide</a>
+  </div>
+
+  <h2>Install</h2>
+  <pre>claude mcp add --transport stdio gsc \
+  -e GSC_SERVICE_ACCOUNT_FILE=~/.config/gcloud/gsc-service-account.json \
+  -- uvx --from git+https://github.com/Walma-Labs/gsc-mcp gsc-mcp</pre>
+  <p>Create a service account in Google Cloud, enable the Search Console API, add the account's e-mail as a user on each property, point <code>GSC_SERVICE_ACCOUNT_FILE</code> at the JSON key. Full steps in the <a href="https://github.com/Walma-Labs/gsc-mcp#setup">README</a>.</p>
+
+  <h2>Tools</h2>
+  <table>
+    <tr><th>Tool</th><th>What it does</th></tr>
+    <tr><td><code>list_sites</code></td><td>Properties the service account can see, with permission level</td></tr>
+    <tr><td><code>search_analytics</code></td><td>Clicks, impressions, CTR and position by date, query, page, country, device or search appearance, with filters and pagination</td></tr>
+    <tr><td><code>compare_periods</code></td><td>Two date ranges side by side with deltas, site-wide or per dimension</td></tr>
+    <tr><td><code>list_sitemaps</code></td><td>Submitted sitemaps with status, errors and indexed counts</td></tr>
+    <tr><td><code>inspect_url</code></td><td>URL Inspection: index status, canonical, last crawl, mobile and rich-result verdicts</td></tr>
+  </table>
+
+  <h2>What to ask it</h2>
+  <p>"Compare the last 28 days with the previous 28. Which pages lost the most clicks, and which queries on those pages dropped?" — "Queries with more than 500 impressions where we rank 11 to 20." — "Is <code>/guides/mcp</code> indexed, and what does Google consider the canonical?"</p>
+
+  <h2>Who built it</h2>
+  <p><a href="https://walma.ai">Walma AI</a> builds an EU-hosted AI gateway that runs Claude, GPT, MCP servers and skills inside a company's own Azure tenant, with policy, budgets and a full audit log. We use this server every week for our own SEO, behind <a href="https://walma.ai/en/ai-hub">Walma AI Hub</a>, next to Google Ads, GA4 and Ahrefs. Our guides cover the rest of the marketing stack: <a href="https://walma.ai/en/guides/mcp/best-mcp-servers-for-marketing-and-seo">best MCP servers for marketing and SEO</a>, <a href="https://walma.ai/en/guides/mcp/google-ads-mcp">Google Ads MCP</a>, <a href="https://walma.ai/en/guides/mcp/google-analytics-mcp">Google Analytics MCP</a> and <a href="https://walma.ai/en/guides/mcp">the complete guide to MCP</a>.</p>
+
+  <p class="foot">MIT licensed. © 2026 <a href="https://walma.ai">Walma AI AB</a>.</p>
+</main>
+</body>
+</html>

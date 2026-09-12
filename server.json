@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.walma-labs/gsc-mcp",
+  "description": "Read-only Google Search Console MCP server with service-account auth: search analytics, period comparison, sitemaps and URL inspection.",
+  "repository": { "url": "https://github.com/Walma-Labs/gsc-mcp", "source": "github" },
+  "version": "0.1.0",
+  "websiteUrl": "https://walma-labs.github.io/gsc-mcp/",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "gsc-mcp",
+      "version": "0.1.0",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        { "name": "GSC_SERVICE_ACCOUNT_FILE", "description": "Path to the Google service-account JSON key", "isRequired": true, "isSecret": true }
+      ]
+    }
+  ]
+}
