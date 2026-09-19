@@ -3,23 +3,38 @@
   "version": "0.2.0",
   "description": "Read-only Google Search Console MCP server with service-account auth: search analytics, period comparison, sitemaps and URL inspection.",
   "license": "MIT",
-  "repository": { "type": "git", "url": "git+https://github.com/Walma-Labs/gsc-mcp.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Walma-Labs/gsc-mcp.git"
+  },
   "homepage": "https://walma-labs.github.io/gsc-mcp/",
   "type": "module",
-  "engines": { "node": ">=20" },
-  "bin": { "gsc-mcp": "dist/stdio.js" },
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "gsc-mcp": "dist/stdio.js"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "start": "node dist/stdio.js",
     "start:http": "node dist/http.js",
-    "prepublishOnly": "npm run build && npm test"
+    "prepublishOnly": "npm run build && npm test",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",
