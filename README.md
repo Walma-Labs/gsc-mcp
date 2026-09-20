@@ -34,37 +34,16 @@ In [Search Console](https://search.google.com/search-console), for each property
 - **Full** is enough for `search_analytics`, `compare_periods` and `list_sitemaps`.
 - `inspect_url` needs **Owner** or **Full** depending on the property type.
 
-### 3. Install
+### 3. Add it to your client
 
-With [uv](https://docs.astral.sh/uv/) (no clone needed):
-
-```bash
-uvx --from git+https://github.com/Walma-Labs/gsc-mcp gsc-mcp
-```
-
-Or with pipx:
-
-```bash
-pipx install git+https://github.com/Walma-Labs/gsc-mcp
-```
-
-Or from a clone:
-
-```bash
-git clone https://github.com/Walma-Labs/gsc-mcp && cd gsc-mcp
-python -m venv .venv && .venv/bin/pip install -e .
-```
-
-### 4. Add it to your client
-
-The server reads one environment variable, `GSC_SERVICE_ACCOUNT_FILE`, the path to the JSON key.
+The server needs Node 20+ and one environment variable: `GSC_SERVICE_ACCOUNT_FILE`, the path to the JSON key (or `GSC_SERVICE_ACCOUNT_JSON` with the key inline — useful when the key comes from a secret store rather than disk).
 
 **Claude Code**
 
 ```bash
 claude mcp add --transport stdio gsc \
   -e GSC_SERVICE_ACCOUNT_FILE=~/.config/gcloud/gsc-service-account.json \
-  -- uvx --from git+https://github.com/Walma-Labs/gsc-mcp gsc-mcp
+  -- npx -y @walma-labs/gsc-mcp
 ```
 
 **Claude Desktop** (`claude_desktop_config.json`)
@@ -73,8 +52,8 @@ claude mcp add --transport stdio gsc \
 {
   "mcpServers": {
     "gsc": {
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/Walma-Labs/gsc-mcp", "gsc-mcp"],
+      "command": "npx",
+      "args": ["-y", "@walma-labs/gsc-mcp"],
       "env": { "GSC_SERVICE_ACCOUNT_FILE": "/Users/you/.config/gcloud/gsc-service-account.json" }
     }
   }
@@ -87,8 +66,8 @@ claude mcp add --transport stdio gsc \
 {
   "mcpServers": {
     "gsc": {
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/Walma-Labs/gsc-mcp", "gsc-mcp"],
+      "command": "npx",
+      "args": ["-y", "@walma-labs/gsc-mcp"],
       "env": { "GSC_SERVICE_ACCOUNT_FILE": "/Users/you/.config/gcloud/gsc-service-account.json" }
     }
   }
@@ -96,6 +75,16 @@ claude mcp add --transport stdio gsc \
 ```
 
 Use absolute paths in the desktop clients; they do not expand `~` or inherit your shell's `PATH`.
+
+### Running it as a remote server
+
+The package also ships a stateless [streamable-HTTP](https://modelcontextprotocol.io/docs/concepts/transports) entrypoint for hosting the server centrally (a container, a gateway):
+
+```bash
+GSC_SERVICE_ACCOUNT_JSON="$(cat key.json)" npx -y -p @walma-labs/gsc-mcp node dist/http.js
+```
+
+It listens on `PORT` (default 8080) with a `/healthz` endpoint, and deliberately has **no auth of its own** — put your gateway or reverse proxy in front. Programmatic hosts can instead `import { createGscServer } from "@walma-labs/gsc-mcp"` and mount the returned server on any transport.
 
 ## Using it
 
@@ -118,14 +107,15 @@ The key file grants read access to all your search data. On a laptop it is one l
 ## Development
 
 ```bash
-.venv/bin/pip install -e .
-GSC_SERVICE_ACCOUNT_FILE=~/.config/gcloud/gsc-service-account.json .venv/bin/gsc-mcp
+npm install
+npm run build && npm test
+GSC_SERVICE_ACCOUNT_FILE=~/.config/gcloud/gsc-service-account.json node dist/stdio.js
 ```
 
-The server speaks MCP over stdio. Test it with the [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
+The server speaks MCP over stdio (and streamable HTTP via `dist/http.js`). Test it with the [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
 
 ```bash
-npx @modelcontextprotocol/inspector .venv/bin/gsc-mcp
+npx @modelcontextprotocol/inspector node dist/stdio.js
 ```
 
 ## License
