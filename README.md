@@ -86,6 +86,17 @@ GSC_SERVICE_ACCOUNT_JSON="$(cat key.json)" npx -y -p @walma-labs/gsc-mcp node di
 
 It listens on `PORT` (default 8080) with a `/healthz` endpoint, and deliberately has **no auth of its own** — put your gateway or reverse proxy in front. Programmatic hosts can instead `import { createGscServer } from "@walma-labs/gsc-mcp"` and mount the returned server on any transport.
 
+## Docker
+
+The repository ships a Dockerfile that runs the stdio server as a non-root user:
+
+```bash
+docker build -t gsc-mcp .
+docker run -i --rm -e GSC_SERVICE_ACCOUNT_JSON="$(cat key.json)" gsc-mcp
+```
+
+In an MCP client, use `docker` as the command with `["run", "-i", "--rm", "-e", "GSC_SERVICE_ACCOUNT_JSON", "gsc-mcp"]` as arguments and pass the key through the client's env settings.
+
 ## Using it
 
 Properties are addressed the way the API addresses them: `sc-domain:example.com` for domain properties, `https://example.com/` for URL-prefix properties. Ask the agent to run `list_sites` first if unsure.
