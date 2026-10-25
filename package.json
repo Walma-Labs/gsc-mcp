@@ -37,7 +37,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@modelcontextprotocol/sdk": "^1.32.0",
     "google-auth-library": "^10.1.0",
     "zod": "^3.24.0"
   },
